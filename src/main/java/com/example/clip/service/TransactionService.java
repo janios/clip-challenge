@@ -23,7 +23,7 @@ public class TransactionService {
 	 @Autowired 
 	 ModelMapper mapper;
 	 
-	 public ResponseEntity<Object> create(PaymentRequest paymentRequest){
+	 public ResponseEntity<PaymentDto> create(PaymentRequest paymentRequest){
 	 
 	 var payment = new Payment();
      payment.setAmount(paymentRequest.getAmount());

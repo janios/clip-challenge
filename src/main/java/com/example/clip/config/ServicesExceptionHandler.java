@@ -38,7 +38,8 @@ public class ServicesExceptionHandler {
 			var constraintViolationException = (ConstraintViolationException) e.getRootCause();
 			
 			Map<String, String> validationMap = new HashMap<>(); 
-			constraintViolationException.getConstraintViolations().stream().forEach( val -> validationMap.put(val.getPropertyPath().toString(), val.getMessage()));
+			constraintViolationException.getConstraintViolations().stream()
+			   .forEach( val -> validationMap.put(val.getPropertyPath().toString(), val.getMessage()));
 						
 			return new ResponseEntity<>(
 					new ClipErrorMessage(String.format("Validation Error. Details: %s",validationMap.toString() ),

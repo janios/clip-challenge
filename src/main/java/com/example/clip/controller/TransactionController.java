@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.clip.model.dto.PaymentDto;
 import com.example.clip.request.PaymentRequest;
 import com.example.clip.service.TransactionService;
 
@@ -22,7 +23,7 @@ public class TransactionController {
 
 
     @RequestMapping(value = "/createPayload", method = RequestMethod.POST)
-    public ResponseEntity<Object> create(@RequestBody PaymentRequest paymentRequest) {
+    public ResponseEntity<PaymentDto> create(@RequestBody PaymentRequest paymentRequest) {
     	return transactionService.create(paymentRequest);
        
     }
