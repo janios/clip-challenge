@@ -12,4 +12,8 @@ public interface PaymentRepository extends JpaRepository<Payment, Long> {
 	@Query("SELECT DISTINCT userId FROM Payment")
 	List<Long> findDistinctUserId();
 	
+	List<Payment> findByStatus(String status);
+	
+	List<Payment> findByUserId(Long id);
+	
 }

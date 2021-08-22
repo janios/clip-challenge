@@ -61,7 +61,4 @@ public class Disbursement {
 	@Column(name = "last_ts")
 	private Date lastTs;
 
-	@Column(name = "status")
-	private String status;
-
 }

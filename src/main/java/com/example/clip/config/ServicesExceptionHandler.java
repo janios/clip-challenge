@@ -11,6 +11,7 @@ import org.springframework.transaction.TransactionSystemException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.example.clip.model.error.ClipErrorMessage;
 
@@ -41,7 +42,7 @@ public class ServicesExceptionHandler {
 
 			return new ResponseEntity<>(
 					new ClipErrorMessage(String.format("Validation Error. Details: %s", validationMap.toString()),
-							e.getLocalizedMessage(), HttpStatus.CONFLICT.value()),
+							e.getLocalizedMessage(), HttpStatus.BAD_REQUEST.value()),
 					HttpStatus.BAD_REQUEST);
 
 		}
@@ -49,6 +50,14 @@ public class ServicesExceptionHandler {
 				new ClipErrorMessage(String.format("Transaction Exception Details: %s", e.getMessage()), e.getMessage(),
 						HttpStatus.INTERNAL_SERVER_ERROR.value()),
 				HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+	
+	@ExceptionHandler(value = ResponseStatusException.class)
+	private ResponseEntity<ClipErrorMessage> handleNotFound(ResponseStatusException ex, WebRequest request){
+		log.error("Not Found Exception");
+		return new ResponseEntity<>(
+				new ClipErrorMessage(ex.getMessage(),ex.getLocalizedMessage(),HttpStatus.NOT_FOUND.value())
+				, HttpStatus.NOT_FOUND);
 	}
 
 }
