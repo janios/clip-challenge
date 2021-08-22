@@ -5,6 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
+
 public class ClipErrorException  extends Exception {
 
 	private static final long serialVersionUID = 5971585368758423354L;

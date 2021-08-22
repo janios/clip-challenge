@@ -20,37 +20,35 @@ import lombok.extern.slf4j.Slf4j;
 @ControllerAdvice
 public class ServicesExceptionHandler {
 
-	
 	@ExceptionHandler(value = Exception.class)
-	private ResponseEntity<ClipErrorMessage> handleException(Exception ex, WebRequest request){
+	private ResponseEntity<ClipErrorMessage> handleException(Exception ex, WebRequest request) {
 		log.error("Unhandled exception ", ex);
-		log.error("Es esta la clase del error {}",ex.getClass().toString());
 		return new ResponseEntity<>(
 				new ClipErrorMessage(String.format("Unhandled exception. Details: %s", ex.getMessage()),
 						ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR.value()),
 				HttpStatus.INTERNAL_SERVER_ERROR);
 	}
-	
+
 	@ExceptionHandler(value = TransactionSystemException.class)
-	private ResponseEntity<ClipErrorMessage> handleValidationException(TransactionSystemException e){
-		log.error("Error de validacion", e);
-		if(e.getRootCause() instanceof ConstraintViolationException) {
+	private ResponseEntity<ClipErrorMessage> handleValidationException(TransactionSystemException e) {
+		log.error("TransactionSystemException", e);
+		if (e.getRootCause() instanceof ConstraintViolationException) {
 			var constraintViolationException = (ConstraintViolationException) e.getRootCause();
-			
-			Map<String, String> validationMap = new HashMap<>(); 
+
+			Map<String, String> validationMap = new HashMap<>();
 			constraintViolationException.getConstraintViolations().stream()
-			   .forEach( val -> validationMap.put(val.getPropertyPath().toString(), val.getMessage()));
-						
+					.forEach(val -> validationMap.put(val.getPropertyPath().toString(), val.getMessage()));
+
 			return new ResponseEntity<>(
-					new ClipErrorMessage(String.format("Validation Error. Details: %s",validationMap.toString() ),
-					e.getLocalizedMessage(), HttpStatus.CONFLICT.value()),HttpStatus.BAD_REQUEST);
-					
+					new ClipErrorMessage(String.format("Validation Error. Details: %s", validationMap.toString()),
+							e.getLocalizedMessage(), HttpStatus.CONFLICT.value()),
+					HttpStatus.BAD_REQUEST);
+
 		}
 		return new ResponseEntity<>(
-				new ClipErrorMessage(String.format("Transaction Exception Details: %s", e.getMessage()),
-						e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR.value()),
+				new ClipErrorMessage(String.format("Transaction Exception Details: %s", e.getMessage()), e.getMessage(),
+						HttpStatus.INTERNAL_SERVER_ERROR.value()),
 				HttpStatus.INTERNAL_SERVER_ERROR);
 	}
-	
-	
+
 }

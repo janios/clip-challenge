@@ -26,16 +26,16 @@ import lombok.Setter;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-@Table(name = "payment")
+@Table(name = "disbursment")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-public class Payment {
+public class Disbursement {
 
 	@Id
-	@SequenceGenerator(initialValue = 3, allocationSize = 1, name = "payment_sequence", sequenceName = "payment_sequence")
-	@GeneratedValue(generator = "payment_sequence")
+	@SequenceGenerator(initialValue = 1, allocationSize = 1, name = "disbursment_sequence", sequenceName = "disbursment_sequence")
+	@GeneratedValue(generator = "disbursment_sequence")
 	private Long id;
 
 	@Column(name = "amount")
@@ -47,6 +47,10 @@ public class Payment {
 	@Column(name = "user_id")
 	private Long userId;
 
+	@NotNull
+	@Column(name = "payment_id")
+	private Long paymentId;
+	
 	@Temporal(TemporalType.TIMESTAMP)
 	@CreatedDate
 	@Column(name = "create_ts")

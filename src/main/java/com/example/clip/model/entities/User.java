@@ -1,6 +1,5 @@
 package com.example.clip.model.entities;
 
-import java.math.BigDecimal;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -12,8 +11,6 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Positive;
 
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -26,26 +23,20 @@ import lombok.Setter;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-@Table(name = "payment")
+@Table(name = "user")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-public class Payment {
+public class User {
 
 	@Id
-	@SequenceGenerator(initialValue = 3, allocationSize = 1, name = "payment_sequence", sequenceName = "payment_sequence")
-	@GeneratedValue(generator = "payment_sequence")
-	private Long id;
-
-	@Column(name = "amount")
-	@Positive
-	@NotNull
-	private BigDecimal amount;
-
-	@NotNull
-	@Column(name = "user_id")
-	private Long userId;
+	@SequenceGenerator(initialValue = 5, allocationSize = 1, name = "user_sequence", sequenceName = "user_sequence")
+	@GeneratedValue(generator = "user_sequence")
+	@Column(name = "id")
+	private long id;
+	@Column(name="name")
+	private String name;
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@CreatedDate
@@ -56,8 +47,5 @@ public class Payment {
 	@LastModifiedDate
 	@Column(name = "last_ts")
 	private Date lastTs;
-
-	@Column(name = "status")
-	private String status;
 
 }

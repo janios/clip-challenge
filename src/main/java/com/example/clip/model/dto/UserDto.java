@@ -1,7 +1,6 @@
 package com.example.clip.model.dto;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -15,15 +14,12 @@ import lombok.Setter;
 @Setter
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(Include.NON_NULL)
-public class PaymentDto implements Serializable {
+public class UserDto implements Serializable {
 
-	private static final long serialVersionUID = 8316920319257045674L;
+	private static final long serialVersionUID = 5071474716914612092L;
 	
 	private long id;
-	private BigDecimal amount;
-	private Long userId;
+	private String name;
 	private Date createTs;
 	private Date lastTs;
-	private String status;
-	
 }
