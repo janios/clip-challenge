@@ -1,44 +1,95 @@
-# Clip Challenge
+# Clip Api Challenge
 
-## Prerequisites
+The Api has the purpose of accept Payments Request, process Disbursements.
+
+## Technologies
 - Spring Boot
 - JPA
 - H2
-- Maven 4
+- Maven
 - Java 11
 
-## Description
-This applications consist of the following:
+Running the Api
 
-- Controller package:  where the basic endpoint is.
-- Repository package:  repository package for 
-- Model package: where entities are stored.
-- Request package: objects that represent request.
+1.- Use clip-0.0.1-SNAPSHOT.jar
 
+2.- Execute comand line: java -jar clip-0.0.1-SNAPSHOT.jar
 
-The project contains a simple API that saves a payment in an in-memory database (for the sake of this example lets use a in-memory-database).
-The challenge consists of completing as many of the following steps as possible:
+3.- Validate http://localhost:8080/api/clip/report/1
 
-1. Create a new endpoint to list all users that have a payment saved in the database (information about payments should be already filled).
-2. Create a new  endpoint so the api can support a disbursement process:
-    - A disbursement process gets all transactions with status new and subtracts a fee of 3.5%  per transaction.
-    - It updates all transactions with a status NEW  to PROCESSED.
-    - Returns a list of users and the amount the'll get 
-    -- Example - User_1 payment: 100, Disbursement: User_1:97.5 (Discount the fee)
-3. Create an endpoint that returns a report per user:
-    - Report:
-    `{
-      user_name - user name
-      payments_sum: - sum of all payments (no mater what's the status)
-      new_payments: sum of all new payments 
-      new_payments_amount: sum of the amount of each payment
-    }`
-4. Add security for the disbursement process endpoint.
+Web API Resources
+
+CREATE_PAY_LOAD POST /api/clip/createPayload REQUEST
+
+{
+    "userId": 1,
+    "amount": 1000
+}
+
+RESPONSE:
+
+{
+    "id": 3,
+    "amount": 1000,
+    "userId": 1,
+    "createTs": "2021-08-23T00:49:55.420+00:00",
+    "lastTs": "2021-08-23T00:49:55.420+00:00",
+    "status": "NEW"
+}
+
+GET_USER_WITH_PAYMENTS GET /api/clip/usersPayments RESPONSE
+
+[
+    {
+        "id": 1,
+        "name": "Cristian Escamilla",
+        "createTs": "2021-08-20T05:00:00.000+00:00",
+        "lastTs": "2021-03-17T06:00:00.000+00:00"
+    },
+    {
+        "id": 2,
+        "name": "Lizette Mendiola",
+        "createTs": "2021-08-20T05:00:00.000+00:00",
+        "lastTs": "2021-03-17T06:00:00.000+00:00"
+    }
+]
+
+DISBURSMENT_PROCESS POST /api/clip/disbursementProcess RESPONSE
+
+[
+    {
+        "id": 1,
+        "amount": 101.55,
+        "userId": 1,
+        "payment": 105.10,
+        "createTs": "2021-08-23T00:56:44.666+00:00",
+        "lastTs": "2021-08-23T00:56:44.666+00:00"
+    },
+    {
+        "id": 2,
+        "amount": 1.06,
+        "userId": 2,
+        "payment": 1.10,
+        "createTs": "2021-08-23T00:56:44.696+00:00",
+        "lastTs": "2021-08-23T00:56:44.696+00:00"
+    }
+]
+
+REPORT GET /api/clip/report/{id}  RESPONSE
+
+{
+    "idUsuario": 1,
+    "name": "Cristian Escamilla",
+    "payments_sum": 1,
+    "new_payments": 1,
+    "new_payments_amount": 105.10
+}
+
 
 
 ##Notes:
-- The expected minimum is that you complete steps 1,2,3. 4 is optional  (Completing all is an extra).
-- We want see your skills and abilities to code so if at any moment you want to change or refactor anything go ahead.
-- We are considering as reviewers that your code challenge is code-prod-quality and it will review under this impression.
-- Please initialize the directory with the challenge as a git repo so you can commit new features and we check on your thought process.
-- Please upload the code-challenge to a git-repository and share the access with the reviewers thavt recruitment team indicates. 
+
+The following files have the configuration of the local H2 DB:
+
+data.sql.-has all the DML inserts for all the tables
+schema.sql.-has all the DDL objects in the DB
