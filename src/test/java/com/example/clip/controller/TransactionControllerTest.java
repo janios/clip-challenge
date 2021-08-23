@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -65,7 +66,18 @@ public class TransactionControllerTest {
 	}
 	
 	@Test
-	public void processDisbursementTest() throws Exception {
+	public void processDisbursementNotAutenticatedTest() throws Exception {
+		disbursmentsDto = new ObjectMapper().readValue(Paths.get("src/test/resources/disbursement.json").toFile(),
+				new TypeReference<List<DisbursementDto>>() {
+				});
+		doReturn(disbursmentsDto).when(service).disbursementProcess();
+		this.mockMvc.perform(post(DISBURSEMENT_PROCESS_ENDPOINT).accept(MediaType.APPLICATION_JSON))
+		.andDo(print()).andExpect(status().isUnauthorized());
+	}
+	
+	@Test
+	@WithMockUser(username = "clip", password = "clip-pass")
+	public void processDisbursementAutenticatedTest() throws Exception {
 		disbursmentsDto = new ObjectMapper().readValue(Paths.get("src/test/resources/disbursement.json").toFile(),
 				new TypeReference<List<DisbursementDto>>() {
 				});
